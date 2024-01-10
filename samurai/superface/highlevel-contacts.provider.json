@@ -1,0 +1,19 @@
+{
+  "name": "highlevel-contacts",
+  "defaultService": "default",
+  "parameters": [],
+  "services": [
+    {
+      "baseUrl": "https://services.leadconnectorhq.com",
+      "id": "default"
+    }
+  ],
+  "securitySchemes": [
+    {
+      "type": "http",
+      "scheme": "bearer",
+      "id": "bearer",
+      "bearerFormat": "JWT"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "auto-generated-superface-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "engines" : { 
+      "node" : ">=18.0.0"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@superfaceai/one-sdk": "beta",
+      "dotenv": "^16.0.3"
+    }
+  }
