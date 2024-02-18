@@ -1,0 +1,31 @@
+{{- if and .Values.newDeployment .Values.newDeployment.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.newDeployment.name }}
+  namespace: {{ .Values.newDeployment.namespace }}
+spec:
+  replicas: {{ .Values.newDeployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.newDeployment.appName }}
+      role: {{ .Values.newDeployment.role }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.newDeployment.appName }}
+        role: {{ .Values.newDeployment.role }}
+    spec:
+      containers:
+      - name: {{ .Values.newDeployment.containerName }}
+        image: "{{ .Values.newDeployment.imageRepository }}@{{ .Values.newDeployment.imageTag }}"
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        ports:
+        - containerPort: {{ .Values.newDeployment.port }}
+{{- end }}

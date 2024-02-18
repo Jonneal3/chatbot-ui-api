@@ -1,0 +1,19 @@
+apiVersion: v2
+description: A Common Helm Chart
+name: samurai-app
+type: application
+keywords:
+- ai-platform
+maintainers:
+- email: jon@samuraichat.com
+  name: Jon Neal
+version: 0.1.0
+appVersion: "1.16.0"
+annotations:
+  meta.helm.sh/release-name: samurai-app
+  meta.helm.sh/release-namespace: samurai-namespace
+
+dependencies:
+- name: runs
+  version: v1
+  repository: "file://./charts/runs"

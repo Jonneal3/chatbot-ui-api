@@ -1,0 +1,48 @@
+{{- if and .Values.canaryRollout .Values.canaryRollout.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Values.canaryRollout.appName }}
+  namespace: {{ .Values.canaryRollout.namespace }}
+spec:
+  replicas: {{ .Values.canaryRollout.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.canaryRollout.deployment.appName }}
+      role: {{ .Values.canaryRollout.deployment.role }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.canaryRollout.deployment.appName }}
+        role: {{ .Values.canaryRollout.deployment.role }}
+    spec:
+      containers:
+      - name: {{ .Values.canaryRollout.deployment.containerName }}
+        image: "{{ .Values.canaryRollout.deployment.imageRepository }}:{{ .Values.canaryRollout.deployment.imageTag }}"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: {{ .Values.canaryRollout.deployment.port }}
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 700
+  progressDeadlineAbort: true
+  strategy:
+    canary:
+      scaleDownDelaySeconds: 30
+      canaryService: {{ .Values.canaryRollout.canaryService }}
+      stableService: {{ .Values.canaryRollout.stableService }}
+      trafficRouting:
+        nginx:
+          stableIngress: {{ .Values.canaryRollout.stableIngress }}
+      steps:
+      - setWeight: 20
+      - pause: {duration: 40s}
+      - setWeight: 40
+      - pause: {duration: 20s}
+      - setWeight: 60
+      - pause: {duration: 20s}
+      - setWeight: 80
+      - pause: {duration: 10s}
+{{- end }}

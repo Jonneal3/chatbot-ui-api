@@ -1,0 +1,78 @@
+## Kubernetes Deployment
+##
+deployment:
+  name: "samurai-deployment"
+  replicas: 1
+  appName: "samurai-app"
+  containerName: "samurai-container"
+  image: "jonneal3/samurai"
+  port: 8080
+
+## Kubernetes Service
+##
+service:
+  name: "samurai-service"
+  appName: "samurai-app"
+  type: "ClusterIP"
+  servicePort: 8080
+  targetPort: 8080
+
+## Namespace
+##
+namespace:
+  enabled: true
+  name: "samurai-namespace"
+
+## New Deployment
+##
+newDeployment:
+  enabled: true
+  name: "samurai-deployment"
+  namespace: "samurai-namespace"
+  replicas: 1
+  appName: "samurai-app"
+  role: "samurai-role"
+  containerName: "my-container"
+  imageRepository: "jonneal3/samurai"
+  imageTag: "latest"
+  port: 8080
+
+## Canary Rollout
+##
+canaryRollout:
+  enabled: true
+  appName: "samurai-app"
+  namespace: "samurai-namespace"
+  deployment:
+    replicas: 1
+    appName: "samurai-app"
+    role: "samurai-role"
+    containerName: "my-container"
+    imageRepository: "jonneal3/samurai"
+    imageTag: "latest"
+    port: 8080
+  canaryService:
+    enabled: true
+    name: "my-canary-service"
+
+## Ingress
+##
+ingress:
+  enabled: true
+  name: "samurai-ingress"
+  namespace: "samurai-namespace"
+  host: "api.samuraichat.com"
+  path: "samurai/src/routes/api"
+  serviceName: "samurai-service"
+  servicePort: 5173
+
+## Horizontal Pod Autoscaler
+##
+hpa:
+  enabled: true
+  name: "samurai-hpa"
+  namespace: "samurai-namespace"
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+  scaleTargetRefName: "samurai-deployment" # Specify the correct deployment name here

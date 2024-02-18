@@ -1,0 +1,15 @@
+{{- if .Values.canaryRollout.canaryService.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.canaryRollout.canaryService.name }}
+  namespace: {{ .Values.namespace.name }}
+spec:
+  selector:
+    app: {{ .Values.canaryRollout.deployment.appName }}
+    role: {{ .Values.canaryRollout.deployment.role }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.canaryRollout.deployment.port }}
+      targetPort: {{ .Values.canaryRollout.deployment.port }}
+{{- end }}
